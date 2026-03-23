@@ -48,6 +48,14 @@ export default function App() {
           <p className="text-white/60 text-sm mt-1">
             Explora sueños surrealistas manifestados por IA.
           </p>
+          <a 
+            href="https://ai.studio/apps/858fbdf1-91f4-47e8-9f1d-1b0798963f83" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="inline-block mt-3 text-xs text-purple-400 hover:text-purple-300 underline underline-offset-2 transition-colors"
+          >
+            ¿Problemas con la página? Visita el prototipo alternativo
+          </a>
         </div>
       </div>
 
