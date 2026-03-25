@@ -26,7 +26,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const modelId = model || 'stabilityai/stable-diffusion-xl-base-1.0';
 
     const hfResponse = await fetch(
-      `https://router.huggingface.co/models/${modelId}`,
+      `https://router.huggingface.co/hf-inference/models/${modelId}`,
       {
         method: 'POST',
         headers: {
