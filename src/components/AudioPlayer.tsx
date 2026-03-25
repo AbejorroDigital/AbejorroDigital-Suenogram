@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Volume2, VolumeX } from 'lucide-react';
+import backgroundMusic from '../data/musica.mp3';
 
 /**
  * Componente que maneja la reproducción de música de fondo.
@@ -35,7 +36,7 @@ export default function AudioPlayer() {
     <>
       <audio 
         ref={audioRef} 
-        src="./data/musica.mp3" 
+        src={backgroundMusic} 
         loop 
         preload="auto"
       />
