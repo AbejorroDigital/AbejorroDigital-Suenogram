@@ -13,45 +13,31 @@ const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_GEMINI_API_KEY || proc
  * @returns {Promise<string>} Una promesa que resuelve a una cadena base64 de la imagen generada.
  */
 async function generateDreamWithHF(prompt: string, retries = 4): Promise<string> {
-  const hfApiKey = import.meta.env.VITE_SUENOGRAMA_API_KEY || process.env.SUENOGRAMA_API_KEY;
-  if (!hfApiKey) {
-    throw new Error("La clave API de Hugging Face (SUENOGRAMA_API_KEY) no está configurada.");
-  }
-
   let delay = 3000;
   for (let i = 0; i < retries; i++) {
-    const response = await fetch(
-      "/api/hf/models/stabilityai/stable-diffusion-xl-base-1.0",
-      {
-        headers: {
-          Authorization: `Bearer ${hfApiKey}`,
-          "Content-Type": "application/json",
-          "Accept": "image/jpeg"
-        },
-        method: "POST",
-        body: JSON.stringify({ inputs: prompt }),
-      }
-    );
+    const response = await fetch("/api/generate-image", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        prompt,
+        model: "stabilityai/stable-diffusion-xl-base-1.0",
+      }),
+    });
 
     if (response.status === 503 && i < retries - 1) {
       console.warn(`El modelo de Hugging Face se está cargando (503). Reintentando en ${delay/1000}s...`);
       await new Promise(r => setTimeout(r, delay));
-      delay *= 1.5; // Exponential backoff
+      delay *= 1.5;
       continue;
     }
 
     if (!response.ok) {
-      const errorText = await response.text().catch(() => response.statusText);
-      throw new Error(`Error en API Hugging Face (${response.status}): ${errorText}`);
+      const errorData = await response.json().catch(() => ({ error: response.statusText }));
+      throw new Error(`Error en API Hugging Face (${response.status}): ${errorData.error}`);
     }
 
-    const blob = await response.blob();
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onloadend = () => resolve(reader.result as string);
-      reader.onerror = reject;
-      reader.readAsDataURL(blob);
-    });
+    const data = await response.json();
+    return data.image;
   }
   throw new Error("El modelo de Hugging Face no pudo cargar a tiempo.");
 }
@@ -92,7 +78,7 @@ export async function generateDream(description: string): Promise<string> {
     }
     throw new Error("No se encontraron datos de imagen en la respuesta de Gemini.");
   } catch (error) {
-    console.warn("Error generando sueño con Gemini, intentando con Hugging Face (Tongyi-MAI/Z-Image-Turbo)...", error);
+    console.warn("Error generando sueño con Gemini, intentando con Hugging Face (Stable Diffusion XL)...", error);
     try {
       return await generateDreamWithHF(prompt);
     } catch (hfError) {

@@ -1,11 +1,7 @@
 {
   "rewrites": [
     {
-      "source": "/api/hf/:match*",
-      "destination": "https://api-inference.huggingface.co/:match*"
-    },
-    {
-      "source": "/(.*)",
+      "source": "/((?!api/).*)",
       "destination": "/index.html"
     }
   ]
