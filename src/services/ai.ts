@@ -21,7 +21,7 @@ async function generateDreamWithHF(prompt: string, retries = 4): Promise<string>
   let delay = 3000;
   for (let i = 0; i < retries; i++) {
     const response = await fetch(
-      "https://api-inference.huggingface.co/models/Tongyi-MAI/Z-Image-Turbo",
+      "/api/hf/models/Tongyi-MAI/Z-Image-Turbo",
       {
         headers: {
           Authorization: `Bearer ${hfApiKey}`,

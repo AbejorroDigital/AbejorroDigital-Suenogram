@@ -1,8 +1,8 @@
 {
   "rewrites": [
     {
-      "source": "/api/huggingface",
-      "destination": "https://api-inference.huggingface.co/models/Tongyi-MAI/Z-Image-Turbo"
+      "source": "/api/hf/:match*",
+      "destination": "https://api-inference.huggingface.co/:match*"
     },
     {
       "source": "/(.*)",
