@@ -31,8 +31,9 @@ export default function AuthButton() {
     const provider = new GoogleAuthProvider();
     try {
       await signInWithPopup(auth, provider);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error signing in", error);
+      alert(`Error de autenticación: ${error.message || 'El popup se cerró antes de completar el inicio de sesión'}`);
     }
   };
 

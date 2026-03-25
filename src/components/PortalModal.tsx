@@ -137,13 +137,13 @@ const PortalModal: React.FC<PortalModalProps> = ({ dream, onClose, onDelete, cur
           exit={{ opacity: 0 }}
           className="fixed inset-0 z-[9999] flex items-center justify-center p-4 sm:p-8"
         >
-          {/* Backdrop */}
+          {/* Fondo opaco (Backdrop) */}
           <div 
             className="absolute inset-0 bg-black/80 backdrop-blur-sm"
             onClick={onClose}
           />
           
-          {/* Modal Content - 2D Card */}
+          {/* Contenido del Modal - Tarjeta 2D */}
           <motion.div
             initial={{ scale: 0.95, y: 20, opacity: 0 }}
             animate={{ scale: 1, y: 0, opacity: 1 }}
@@ -151,7 +151,7 @@ const PortalModal: React.FC<PortalModalProps> = ({ dream, onClose, onDelete, cur
             transition={{ type: "spring", damping: 25, stiffness: 300 }}
             className="relative w-full max-w-3xl bg-zinc-900 border border-white/10 rounded-2xl shadow-2xl overflow-hidden flex flex-col md:flex-row"
           >
-            {/* Close Button */}
+            {/* Botón de cerrar */}
             <button
               onClick={onClose}
               className="absolute top-4 right-4 z-20 p-2 bg-black/50 hover:bg-black/80 text-white rounded-full backdrop-blur-md transition-colors"
@@ -159,7 +159,7 @@ const PortalModal: React.FC<PortalModalProps> = ({ dream, onClose, onDelete, cur
               <X className="w-5 h-5" />
             </button>
 
-            {/* Image Area */}
+            {/* Área de la imagen */}
             <div className="w-full md:w-1/2 relative bg-black aspect-video md:aspect-square md:max-h-[450px] flex items-center justify-center">
               {isGenerating && (
                 <div className="flex flex-col items-center gap-4 text-purple-400">
@@ -195,7 +195,7 @@ const PortalModal: React.FC<PortalModalProps> = ({ dream, onClose, onDelete, cur
               )}
             </div>
 
-            {/* Text Area */}
+            {/* Área de texto */}
             <div className="w-full md:w-1/2 p-6 md:p-8 flex flex-col justify-center bg-zinc-900">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2">

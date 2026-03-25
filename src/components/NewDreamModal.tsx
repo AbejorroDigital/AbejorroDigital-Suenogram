@@ -49,7 +49,7 @@ const NewDreamModal: React.FC<NewDreamModalProps> = ({ location, onClose, onSave
       dreamDate
     });
     
-    // Reset form
+    // Reiniciar formulario
     setDescription('');
     setDreamDate(new Date().toISOString().split('T')[0]);
     setAuthorName('');

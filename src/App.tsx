@@ -87,7 +87,7 @@ export default function App() {
    * @param {DreamData} dream - Los datos del sueño a guardar.
    */
   const handleSaveDream = async (dream: DreamData) => {
-    // Save to Firestore
+    // Guardar en Firestore
     try {
       const docRef = await addDoc(collection(db, 'dreams'), {
         description: dream.description,
@@ -101,7 +101,7 @@ export default function App() {
       
       const newDream = { ...dream, id: docRef.id, authorUid: user.uid, author: dream.author || user.displayName || 'Soñador Anónimo' };
       setNewDreamLocation(null);
-      setSelectedDream(newDream); // Open the portal immediately for the new dream
+      setSelectedDream(newDream); // Abrir el portal inmediatamente para el nuevo sueño
     } catch (error) {
       console.error("Error adding document: ", error);
       alert("Hubo un error al guardar el sueño.");
@@ -125,7 +125,7 @@ export default function App() {
 
   return (
     <div className="relative w-full h-screen overflow-hidden bg-black font-sans">
-      {/* Header Overlay - Sleek Top Bar */}
+      {/* Header Overlay - Barra superior elegante */}
       <div className="absolute top-0 left-0 right-0 p-4 sm:p-6 z-10 pointer-events-none flex justify-center items-start">
         <div className="bg-black/50 backdrop-blur-md border border-white/10 rounded-full px-4 sm:px-6 py-2 sm:py-3 pointer-events-auto flex items-center gap-4 sm:gap-6 shadow-2xl">
           <div className="flex items-center gap-2 sm:gap-3">
@@ -156,7 +156,7 @@ export default function App() {
         </div>
       </div>
 
-      {/* Map Layer */}
+      {/* Capa del Mapa */}
       <Map 
         dreams={dreams} 
         onDreamSelect={setSelectedDream} 
@@ -164,7 +164,7 @@ export default function App() {
         isAddingMode={isAddingMode}
       />
 
-      {/* Add Button */}
+      {/* Botón de Añadir */}
       <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-10">
         <button 
           onClick={() => setIsAddingMode(!isAddingMode)}
@@ -178,7 +178,7 @@ export default function App() {
         </button>
       </div>
 
-      {/* Footer Signature */}
+      {/* Firma en el pie de página */}
       <div className="absolute bottom-2 left-0 right-0 text-center z-10 pointer-events-none flex flex-col items-center gap-1">
         <p className="text-white/40 text-[10px] tracking-widest uppercase pointer-events-auto inline-block">
           Desarrollado por <a href="https://abejorro-digital.rf.gd/" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors underline underline-offset-2">Abejorro Digital</a> 2026
@@ -188,14 +188,14 @@ export default function App() {
         </p>
       </div>
 
-      {/* Instruction Toast */}
+      {/* Mensaje de instrucción animado */}
       {isAddingMode && (
         <div className="absolute top-24 left-1/2 -translate-x-1/2 z-10 bg-black/70 text-white px-6 py-3 rounded-full backdrop-blur-md border border-white/20 text-sm font-medium animate-pulse shadow-lg whitespace-nowrap">
           Haz clic en cualquier lugar del mapa para ubicar tu sueño
         </div>
       )}
 
-      {/* Modals */}
+      {/* Modales */}
       <NewDreamModal 
         location={newDreamLocation} 
         onClose={() => setNewDreamLocation(null)} 

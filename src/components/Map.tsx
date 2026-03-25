@@ -7,7 +7,7 @@ import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { DreamData } from '../data/mockDreams';
 
-// Fix for default marker icons in React Leaflet
+// Corrección para los iconos de marcador por defecto en React Leaflet
 delete (L.Icon.Default.prototype as any)._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
@@ -76,7 +76,7 @@ const Map: React.FC<MapProps> = ({ dreams, onDreamSelect, onMapClick, isAddingMo
         style={{ height: '100%', width: '100%', background: '#0a0a0a' }}
         zoomControl={false}
       >
-        {/* Dark theme tiles */}
+        {/* Capa de modo oscuro */}
         <TileLayer
           url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
