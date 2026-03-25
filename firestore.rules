@@ -1,0 +1,78 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // ===============================================================
+    // Assumed Data Model
+    // ===============================================================
+    // Collection: dreams
+    // Document ID: auto-generated
+    // Fields:
+    //   - description: string (required, max 1000 chars)
+    //   - lat: number (required)
+    //   - lng: number (required)
+    //   - authorUid: string (required, immutable)
+    //   - author: string (required, max 100 chars)
+    //   - createdAt: timestamp (required, immutable)
+    // ===============================================================
+
+    // Helper Functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isDocOwner() {
+      return isAuthenticated() && request.auth.uid == resource.data.authorUid;
+    }
+
+    function uidNotModified() {
+      return !('authorUid' in request.resource.data) || request.resource.data.authorUid == resource.data.authorUid;
+    }
+
+    function hasRequiredFields(fields) {
+      return request.resource.data.keys().hasAll(fields);
+    }
+
+    function validStringLength(field, minLen, maxLen) {
+      return request.resource.data[field] is string &&
+        request.resource.data[field].size() >= minLen &&
+        request.resource.data[field].size() <= maxLen;
+    }
+
+    function isValidDream(data) {
+      let hasBaseFields = hasRequiredFields(['description', 'lat', 'lng', 'authorUid', 'author', 'createdAt']);
+      let hasValidBaseTypes = validStringLength('description', 1, 1000) &&
+                              data.lat is number &&
+                              data.lng is number &&
+                              data.authorUid is string &&
+                              validStringLength('author', 1, 100) &&
+                              data.createdAt is timestamp;
+                              
+      let hasValidOptionalDreamDate = !('dreamDate' in data) || (data.dreamDate is string && data.dreamDate.size() <= 10);
+      
+      let hasOnlyAllowedKeys = data.keys().hasOnly(['description', 'lat', 'lng', 'authorUid', 'author', 'createdAt', 'dreamDate']);
+
+      return hasBaseFields && hasValidBaseTypes && hasValidOptionalDreamDate && hasOnlyAllowedKeys;
+    }
+
+    match /dreams/{dreamId} {
+      // Anyone can read dreams
+      allow read: if true;
+      
+      // Only authenticated users can create dreams, and they must be the author
+      allow create: if isAuthenticated() && 
+                    isValidDream(request.resource.data) && 
+                    request.resource.data.authorUid == request.auth.uid;
+                    
+      // Only the author can update their dream, and they cannot change authorUid or createdAt
+      allow update: if isDocOwner() && 
+                    isValidDream(request.resource.data) && 
+                    uidNotModified() &&
+                    request.resource.data.createdAt == resource.data.createdAt;
+                    
+      // Only the author can delete their dream
+      allow delete: if isDocOwner();
+    }
+  }
+}

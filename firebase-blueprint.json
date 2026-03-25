@@ -1,0 +1,31 @@
+{
+  "entities": {
+    "Dream": {
+      "title": "Dream",
+      "description": "A dream registered by a user on the map.",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string", "description": "Title of the dream" },
+        "description": { "type": "string", "description": "Description of the dream" },
+        "imageUrl": { "type": "string", "description": "URL of the AI generated image" },
+        "location": {
+          "type": "object",
+          "properties": {
+            "lat": { "type": "number" },
+            "lng": { "type": "number" }
+          }
+        },
+        "authorUid": { "type": "string", "description": "UID of the user who created the dream" },
+        "authorName": { "type": "string", "description": "Name of the user who created the dream" },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Timestamp of creation" }
+      },
+      "required": ["title", "description", "imageUrl", "location", "authorUid", "authorName", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/dreams/{dreamId}": {
+      "schema": { "$ref": "#/entities/Dream" },
+      "description": "Collection of all dreams registered by users."
+    }
+  }
+}

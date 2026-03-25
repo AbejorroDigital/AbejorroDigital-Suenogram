@@ -19,25 +19,40 @@ interface NewDreamModalProps {
   onSave: (dream: DreamData) => void;
 }
 
+/**
+ * Componente modal que muestra el formulario para registrar un nuevo sueño.
+ * 
+ * @param {NewDreamModalProps} props - Propiedades del modal.
+ * @returns {JSX.Element} Contenedor animado del modal.
+ */
 const NewDreamModal: React.FC<NewDreamModalProps> = ({ location, onClose, onSave }) => {
-  const [author, setAuthor] = useState('');
   const [description, setDescription] = useState('');
+  const [dreamDate, setDreamDate] = useState(new Date().toISOString().split('T')[0]);
+  const [authorName, setAuthorName] = useState('');
 
+  /**
+   * Maneja el envío del formulario.
+   * Valida los campos ingresados y llama a la función onSave.
+   * 
+   * @param {React.FormEvent} e - Evento principal de submit del formulario.
+   */
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!author.trim() || !description.trim() || !location) return;
+    if (!description.trim() || !location || !dreamDate || !authorName.trim()) return;
     
     onSave({
       id: `dream-${Date.now()}`,
       lat: location.lat,
       lng: location.lng,
-      author,
-      description
+      author: authorName.trim(),
+      description,
+      dreamDate
     });
     
     // Reset form
-    setAuthor('');
     setDescription('');
+    setDreamDate(new Date().toISOString().split('T')[0]);
+    setAuthorName('');
   };
 
   return (
@@ -61,17 +76,29 @@ const NewDreamModal: React.FC<NewDreamModalProps> = ({ location, onClose, onSave
             
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-white/70 mb-1">Tu Nombre</label>
+                <label className="block text-sm font-medium text-white/70 mb-1">Nombre del Soñador</label>
                 <input
                   type="text"
-                  value={author}
-                  onChange={(e) => setAuthor(e.target.value)}
+                  value={authorName}
+                  onChange={(e) => setAuthorName(e.target.value)}
                   className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-purple-500 transition-colors"
-                  placeholder="Ej. soñador_anonimo"
+                  placeholder="Tu nombre o seudónimo..."
                   required
                 />
               </div>
-              
+
+              <div>
+                <label className="block text-sm font-medium text-white/70 mb-1">Fecha del Sueño</label>
+                <input
+                  type="date"
+                  value={dreamDate}
+                  onChange={(e) => setDreamDate(e.target.value)}
+                  max={new Date().toISOString().split('T')[0]}
+                  className="w-full bg-black/50 border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-purple-500 transition-colors"
+                  required
+                />
+              </div>
+
               <div>
                 <label className="block text-sm font-medium text-white/70 mb-1">Descripción del Sueño</label>
                 <textarea

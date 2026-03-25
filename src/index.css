@@ -1,7 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Italianno&family=Jim+Nightshade&display=swap');
 @import "tailwindcss";
 
 @theme {
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-italianno: "Italianno", cursive;
+  --font-jim: "Jim Nightshade", cursive;
 }
 
 body {
@@ -22,12 +25,8 @@ body {
 }
 
 .custom-dream-marker {
-  transition: transform 0.2s ease;
-}
-
-.custom-dream-marker:hover {
-  transform: scale(1.2) !important;
-  z-index: 1000 !important;
+  /* Removed transition and hover scale to ensure stable clickability */
+  cursor: pointer;
 }
 
 .leaflet-popup-content-wrapper {
@@ -44,4 +43,27 @@ body {
 
 .leaflet-popup-close-button {
   color: white !important;
+}
+
+/* Custom Tooltip Styles */
+.leaflet-tooltip.custom-tooltip {
+  background: rgba(20, 20, 20, 0.9);
+  border: 1px solid rgba(168, 85, 247, 0.4);
+  color: white;
+  border-radius: 8px;
+  backdrop-filter: blur(4px);
+  padding: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+.leaflet-tooltip.custom-tooltip p.font-bold,
+.dream-popup h3 {
+  font-family: var(--font-jim);
+  font-size: 1.5rem;
+  line-height: 1.2;
+  font-weight: normal;
+}
+
+.leaflet-tooltip.custom-tooltip::before {
+  border-top-color: rgba(20, 20, 20, 0.9);
 }

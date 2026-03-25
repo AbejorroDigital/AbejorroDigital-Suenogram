@@ -2,7 +2,7 @@
  * @fileoverview Componente de mapa interactivo utilizando Leaflet para mostrar la ubicación de los sueños.
  */
 import React, { useEffect } from 'react';
-import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, Tooltip, useMapEvents } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { DreamData } from '../data/mockDreams';
@@ -70,6 +70,9 @@ const Map: React.FC<MapProps> = ({ dreams, onDreamSelect, onMapClick, isAddingMo
       <MapContainer
         center={[25, -90]}
         zoom={3}
+        minZoom={2}
+        maxBounds={[[-90, -180], [90, 180]]}
+        maxBoundsViscosity={1.0}
         style={{ height: '100%', width: '100%', background: '#0a0a0a' }}
         zoomControl={false}
       >
@@ -77,6 +80,7 @@ const Map: React.FC<MapProps> = ({ dreams, onDreamSelect, onMapClick, isAddingMo
         <TileLayer
           url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+          noWrap={true}
         />
         
         <MapEvents onMapClick={onMapClick} isAddingMode={isAddingMode} />
@@ -90,12 +94,18 @@ const Map: React.FC<MapProps> = ({ dreams, onDreamSelect, onMapClick, isAddingMo
               click: () => onDreamSelect(dream),
             }}
           >
+            <Tooltip direction="top" offset={[0, -15]} className="custom-tooltip">
+              <div className="max-w-[200px]">
+                <p className="font-bold text-xs mb-1">Sueño de {dream.author}</p>
+                <p className="text-[10px] line-clamp-3 whitespace-normal">{dream.description}</p>
+              </div>
+            </Tooltip>
             <Popup className="dream-popup">
               <div className="p-2">
                 <h3 className="font-bold text-sm mb-1">Sueño de {dream.author}</h3>
                 <p className="text-xs text-gray-600 line-clamp-2">{dream.description}</p>
                 <button 
-                  className="mt-2 w-full bg-purple-600 text-white text-xs py-1 px-2 rounded hover:bg-purple-700 transition-colors"
+                  className="mt-2 w-full bg-purple-600 text-white text-xl font-italianno py-1 px-2 rounded hover:bg-purple-700 transition-colors"
                   onClick={(e) => {
                     e.stopPropagation();
                     onDreamSelect(dream);

@@ -17,6 +17,9 @@ export interface DreamData {
   lng: number;
   description: string;
   author: string;
+  authorUid?: string;
+  dreamDate?: string;
+  createdAt?: Date;
 }
 
 /**
@@ -29,20 +32,23 @@ export const mockDreams: DreamData[] = [
     lat: 19.6926, // Teotihuacán, México
     lng: -98.8436,
     description: "Una pirámide antigua flotando en un cielo de nubes de algodón de azúcar al atardecer, rodeada de alebrijes de neón luminosos.",
-    author: "Valentina"
+    author: "Valentina",
+    dreamDate: "2026-03-20"
   },
   {
     id: "ve-1",
     lat: 5.9690, // Parque Nacional Canaima, Venezuela
     lng: -62.5362,
     description: "Un tepuy colosal del cual cae una cascada de luz estelar brillante hacia una selva densa con hojas de cristal.",
-    author: "Gabriel"
+    author: "Gabriel",
+    dreamDate: "2026-03-22"
   },
   {
     id: "ca-1",
     lat: 51.1784, // Banff, Canadá
     lng: -115.5708,
     description: "Un bosque nevado donde los pinos son de hielo azul y la aurora boreal forma puentes sólidos y resplandecientes en el cielo.",
-    author: "Sophie"
+    author: "Sophie",
+    dreamDate: "2026-03-24"
   }
 ];
